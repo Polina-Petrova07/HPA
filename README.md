@@ -13,7 +13,7 @@ ____
 ____
 ```
 Map maze(250000, impass);
-std::vector<Cluster> clusters = maze.clusteringMaze(100;
+std::vector<Cluster> clusters = maze.clusteringMaze(100);
 Node n1(1, 1);
 Node n2(250000, 25);
 ```
