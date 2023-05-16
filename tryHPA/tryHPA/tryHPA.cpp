@@ -121,7 +121,8 @@ std::vector<std::pair<int, location>> findClusterNeighbors(int count, int cluste
             continue;
         else {
             std::pair<int, location> tmp;
-            tmp.first= findVertex(masI[i].first, masJ[i].first, (int)clusterMap.size());
+            //tmp.first= findVertex(masI[i].first, masJ[i].first, (int)clusterMap.size());
+            tmp.first = (masI[i].first * (int)clusterMap.size() + masJ[i].first + 1);
             tmp.second = masI[i].second;
             neighbors.push_back(tmp);
         }
@@ -364,10 +365,12 @@ Graph createGraph(std::vector<Entrance> entrances, int sizeMap, /**/Map &maze /*
             case 1: {
                 int x = currEntrance.getL1_s().first;
                 int y = currEntrance.getL1_s().second;
-                Node node1(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
+                //Node node1(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
+                Node node1(x * sizeMap + y + 1, currEntrance.getIdCluster_1());
                 x = currEntrance.getL2_s().first;
                 y = currEntrance.getL2_s().second;
-                Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
+                //Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
+                Node node2(x * sizeMap + y + 1, currEntrance.getIdCluster_2());
 
                 if (visit_1[node1.getId()] == false) {
                     G.addNode(node1);
@@ -385,11 +388,12 @@ Graph createGraph(std::vector<Entrance> entrances, int sizeMap, /**/Map &maze /*
             case 2: {
                 int x = currEntrance.getL1_s().first;
                 int y = currEntrance.getL1_s().second;
-                Node node1(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
+                //Node node1(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
+                Node node1(x * sizeMap + y + 1, currEntrance.getIdCluster_1());
                 x = currEntrance.getL2_s().first;
                 y = currEntrance.getL2_s().second;
-                Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
-
+                //Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
+                Node node2(x * sizeMap + y + 1, currEntrance.getIdCluster_2());
                 if (visit_1[node1.getId()] == false) {
                     G.addNode(node1);
                     visit_1[node1.getId()] = true;
@@ -412,8 +416,10 @@ Graph createGraph(std::vector<Entrance> entrances, int sizeMap, /**/Map &maze /*
 
 
                 if (x1 != x2) {
-                    Node node1(findVertex(x1 + 1, y1, sizeMap), currEntrance.getIdCluster_1());
-                    Node node2(findVertex(currEntrance.getL2_s().first + 1, currEntrance.getL2_s().second, sizeMap), currEntrance.getIdCluster_2());
+                    //Node node1(findVertex(x1 + 1, y1, sizeMap), currEntrance.getIdCluster_1());
+                    Node node1((x1 + 1) * sizeMap + y1 + 1, currEntrance.getIdCluster_1());
+                    //Node node2(findVertex(currEntrance.getL2_s().first + 1, currEntrance.getL2_s().second, sizeMap), currEntrance.getIdCluster_2());
+                    Node node2((currEntrance.getL2_s().first + 1) * sizeMap + currEntrance.getL2_s().second + 1, currEntrance.getIdCluster_2());
 
                     if (visit_1[node1.getId()] == false) {
                         G.addNode(node1);
@@ -428,8 +434,10 @@ Graph createGraph(std::vector<Entrance> entrances, int sizeMap, /**/Map &maze /*
                     G.addEdge(e);
                 }
                 else {
-                    Node node1(findVertex(x1, y1 + 1, sizeMap), currEntrance.getIdCluster_1());
-                    Node node2(findVertex(currEntrance.getL2_s().first, currEntrance.getL2_s().second + 1, sizeMap), currEntrance.getIdCluster_2());
+                    //Node node1(findVertex(x1, y1 + 1, sizeMap), currEntrance.getIdCluster_1());
+                    Node node1(x1 * sizeMap + y1 + 1 + 1, currEntrance.getIdCluster_1());
+                    //Node node2(findVertex(currEntrance.getL2_s().first, currEntrance.getL2_s().second + 1, sizeMap), currEntrance.getIdCluster_2());
+                    Node node2(currEntrance.getL2_s().first * sizeMap + currEntrance.getL2_s().second + 1 + 1, currEntrance.getIdCluster_2());
 
                     if (visit_1[node1.getId()] == false) {
                         G.addNode(node1);
@@ -454,8 +462,10 @@ Graph createGraph(std::vector<Entrance> entrances, int sizeMap, /**/Map &maze /*
 
 
                 if (x1 != x2) {
-                    Node node1(findVertex(x1 + 1, y1, sizeMap), currEntrance.getIdCluster_1());
-                    Node node2(findVertex(currEntrance.getL2_s().first + 1, currEntrance.getL2_s().second, sizeMap), currEntrance.getIdCluster_2());
+                    //Node node1(findVertex(x1 + 1, y1, sizeMap), currEntrance.getIdCluster_1());
+                    Node node1((x1 + 1)* sizeMap + y1 + 1, currEntrance.getIdCluster_1());
+                    //Node node2(findVertex(currEntrance.getL2_s().first + 1, currEntrance.getL2_s().second, sizeMap), currEntrance.getIdCluster_2());
+                    Node node2((currEntrance.getL2_s().first + 1)* sizeMap + currEntrance.getL2_s().second + 1, currEntrance.getIdCluster_2());
 
                     if (visit_1[node1.getId()] == false) {
                         G.addNode(node1);
@@ -472,8 +482,10 @@ Graph createGraph(std::vector<Entrance> entrances, int sizeMap, /**/Map &maze /*
                     G.addEdge(e);
                 }
                 else {
-                    Node node1(findVertex(x1, y1 + 1, sizeMap), currEntrance.getIdCluster_1());
-                    Node node2(findVertex(currEntrance.getL2_s().first, currEntrance.getL2_s().second + 1, sizeMap), currEntrance.getIdCluster_2());
+                    //Node node1(findVertex(x1, y1 + 1, sizeMap), currEntrance.getIdCluster_1());
+                    Node node1(x1* sizeMap + y1 + 1 + 1, currEntrance.getIdCluster_1());
+                    //Node node2(findVertex(currEntrance.getL2_s().first, currEntrance.getL2_s().second + 1, sizeMap), currEntrance.getIdCluster_2());
+                    Node node2(currEntrance.getL2_s().first * sizeMap + currEntrance.getL2_s().second + 1 + 1, currEntrance.getIdCluster_2());
 
                     if (visit_1[node1.getId()] == false) {
                         G.addNode(node1);
@@ -500,8 +512,10 @@ Graph createGraph(std::vector<Entrance> entrances, int sizeMap, /**/Map &maze /*
 
 
                 if (x1 != x2) {
-                    Node node1(findVertex(x1 + 2, y1, sizeMap), currEntrance.getIdCluster_1());
-                    Node node2(findVertex(currEntrance.getL2_s().first + 2, currEntrance.getL2_s().second, sizeMap), currEntrance.getIdCluster_2());
+                    //Node node1(findVertex(x1 + 2, y1, sizeMap), currEntrance.getIdCluster_1());
+                    Node node1((x1 + 2)* sizeMap + y1 + 1, currEntrance.getIdCluster_1());
+                    //Node node2(findVertex(currEntrance.getL2_s().first + 2, currEntrance.getL2_s().second, sizeMap), currEntrance.getIdCluster_2());
+                    Node node2((currEntrance.getL2_s().first + 2)* sizeMap + currEntrance.getL2_s().second + 1, currEntrance.getIdCluster_2());
 
                     if (visit_1[node1.getId()] == false) {
                         G.addNode(node1);
@@ -518,8 +532,10 @@ Graph createGraph(std::vector<Entrance> entrances, int sizeMap, /**/Map &maze /*
                     G.addEdge(e);
                 }
                 else {
-                    Node node1(findVertex(x1, y1 + 2, sizeMap), currEntrance.getIdCluster_1());
-                    Node node2(findVertex(currEntrance.getL2_s().first, currEntrance.getL2_s().second + 2, sizeMap), currEntrance.getIdCluster_2());
+                    //Node node1(findVertex(x1, y1 + 2, sizeMap), currEntrance.getIdCluster_1());
+                    Node node1(x1* sizeMap + y1 + 2 + 1, currEntrance.getIdCluster_1());
+                    //Node node2(findVertex(currEntrance.getL2_s().first, currEntrance.getL2_s().second + 2, sizeMap), currEntrance.getIdCluster_2());
+                    Node node2(currEntrance.getL2_s().first* sizeMap + currEntrance.getL2_s().second + 2 + 1, currEntrance.getIdCluster_2());
 
                     if (visit_1[node1.getId()] == false) {
                         G.addNode(node1);
@@ -540,16 +556,20 @@ Graph createGraph(std::vector<Entrance> entrances, int sizeMap, /**/Map &maze /*
             case 6: {
                 int x = currEntrance.getL1_s().first;
                 int y = currEntrance.getL1_s().second;
-                Node node1(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
+                //Node node1(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
+                Node node1(x* sizeMap + y + 1, currEntrance.getIdCluster_1());
                 x = currEntrance.getL2_s().first;
                 y = currEntrance.getL2_s().second;
-                Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
+                //Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
+                Node node2(x* sizeMap + y + 1, currEntrance.getIdCluster_2());
                 x = currEntrance.getL1_e().first;
                 y = currEntrance.getL1_e().second;
-                Node node3(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
+                //Node node3(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
+                Node node3(x* sizeMap + y + 1, currEntrance.getIdCluster_1());
                 x = currEntrance.getL2_e().first;
                 y = currEntrance.getL2_e().second;
-                Node node4(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
+                //Node node4(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
+                Node node4(x* sizeMap + y + 1, currEntrance.getIdCluster_2());
 
                 if (visit_1[node1.getId()] == false) {
                     G.addNode(node1);
@@ -834,7 +854,6 @@ int eyristic_funсtion(int current, int  goal, int size) {
     return manhettenDist(size, current, goal);
 }
 
-// волновой алгоритм для поиска уточненного пути для каждого куска абстрактного (не доделан пока)
 std::pair<double, std::vector<Node>> AStarDistance(Map& maze, std::vector<Cluster> clusters, Node start, Node goal) {
     Cluster cluster = clusters[start.getClusterId() - 1];
     std::pair<int, int> startPos = cluster.getStart();
@@ -1076,7 +1095,7 @@ int main()
 
     */
 
-    std::vector<int> impass = { };
+    std::vector<int> impass = {};
     Map maze(10000, impass);
     std::vector<Cluster> clusters = maze.clusteringMaze(50); // !
     std::cout << "I AM GOOD!" << std::endl;
@@ -1093,7 +1112,6 @@ int main()
     //std::pair<int, std::vector<Node>> path = AbstractDistance(GNew, n1, n2);
     //std::pair<double, std::vector<Node>> testFullPath = createFullPath(maze, GNew, clusters, n1, n2);
     std::pair<double, std::vector<Node>> testFullPathAStar = createFullPathAStar(maze, GNew, clusters, n1, n2);
-
     return 0;
 }
 

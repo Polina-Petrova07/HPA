@@ -174,7 +174,7 @@ public:
 			}
 		}
 	}
-	Map(std::vector<std::vector<int>> M) {
+	Map(std::vector<std::vector<int>>& M) {
 		this->size = (int)M.size();
 		this->maze = M;
 	}
@@ -193,7 +193,7 @@ public:
 	~Map() {};
 
 	int getSize() { return this->size; }
-	std::vector<std::vector<int>> getMaze() { return this->maze; };
+	std::vector<std::vector<int>>& getMaze() { return this->maze; };
 
 	void setItem(int i, int j, int value) {
 		this->maze[i][j] = value;

@@ -82,8 +82,8 @@ public:
 		this->nodes = nods;
 		this->edges = edges;
 	}
-	std::vector<Node> getNodes() { return this->nodes; }
-	std::vector<Edge> getEdges() { return this->edges; }
+	std::vector<Node>& getNodes() { return this->nodes; }
+	std::vector<Edge>& getEdges() { return this->edges; }
 	void addNode(Node n) {
 		nodes.push_back(n);
 	}
