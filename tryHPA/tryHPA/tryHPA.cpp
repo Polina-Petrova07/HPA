@@ -1077,8 +1077,8 @@ int main()
     */
 
     std::vector<int> impass = { };
-    Map maze(250000, impass); // 250000 вершин
-    std::vector<Cluster> clusters = maze.clusteringMaze(10); // !
+    Map maze(10000, impass);
+    std::vector<Cluster> clusters = maze.clusteringMaze(50); // !
     std::cout << "I AM GOOD!" << std::endl;
     std::vector<Entrance> entrance = findEnterance(clusters, maze);
     std::cout << "I AM GOOD!" << std::endl;
@@ -1086,7 +1086,7 @@ int main()
     GNew = createGraph(entrance, maze.getSize(), maze);
     std::cout << "I AM GOOD!" << std::endl;
     Node n1(1, 1);
-    Node n2(250000, 2500);
+    Node n2(10000, 4);
     GNew.addNodeAndEdges(n1, maze.getSize());
     GNew.addNodeAndEdges(n2, maze.getSize());
     std::cout << "I AM GOOD!" << std::endl;

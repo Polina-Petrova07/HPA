@@ -1,5 +1,6 @@
 #pragma once
 
+/*
 #include <Windows.h>
 #include <wincodec.h>
 #include <gdiplus.h>
@@ -140,3 +141,4 @@ void draw_pixel(int x, int y, const TCHAR* filename_source, const TCHAR* filenam
     }
     Gdiplus::GdiplusShutdown(gdiplusToken);
 }
+*/
