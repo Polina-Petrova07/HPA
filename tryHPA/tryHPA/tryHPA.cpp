@@ -345,32 +345,77 @@ std::vector<Entrance> findEnterance(std::vector<Cluster> V, Map &map) {
 void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /**/, Graph& G) {
     //Graph G;
 
-    std::vector<bool> visit_1;
-    int tmp2 = sizeMap * sizeMap;
-    for (int i = 0; i < tmp2; i++) {
-        visit_1.push_back(false);
-    }
+    std::vector<bool> visit_1(sizeMap * sizeMap, false);
     // ноды и inter ребра
 
-        for (int i = 0; i < entrances.size(); i++) {
-            Entrance currEntrance = entrances[i];
+    for (int i = 0; i < entrances.size(); i++) {
+        Entrance currEntrance = entrances[i];
 
-            //**/
-            if (maze.getMaze()[currEntrance.getL1_s().first][currEntrance.getL1_s().second] == 0 &&
-                maze.getMaze()[currEntrance.getL1_e().first][currEntrance.getL1_e().second] == 0)
-                continue;
-            //**/
-            int currLen = currEntrance.getLenght();
-            switch (currLen) {
-            case 1: {
-                int x = currEntrance.getL1_s().first;
-                int y = currEntrance.getL1_s().second;
-                //Node node1(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
-                Node node1(x * sizeMap + y + 1, currEntrance.getIdCluster_1());
-                x = currEntrance.getL2_s().first;
-                y = currEntrance.getL2_s().second;
-                //Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
-                Node node2(x * sizeMap + y + 1, currEntrance.getIdCluster_2());
+        //**/
+        if (maze.getMaze()[currEntrance.getL1_s().first][currEntrance.getL1_s().second] == 0 &&
+            maze.getMaze()[currEntrance.getL1_e().first][currEntrance.getL1_e().second] == 0)
+            continue;
+        //**/
+        int currLen = currEntrance.getLenght();
+        switch (currLen) {
+        case 1: {
+            int x = currEntrance.getL1_s().first;
+            int y = currEntrance.getL1_s().second;
+            //Node node1(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
+            Node node1(x * sizeMap + y + 1, currEntrance.getIdCluster_1());
+            x = currEntrance.getL2_s().first;
+            y = currEntrance.getL2_s().second;
+            //Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
+            Node node2(x * sizeMap + y + 1, currEntrance.getIdCluster_2());
+
+            if (visit_1[node1.getId()] == false) {
+                G.addNode(node1);
+                visit_1[node1.getId()] = true;
+            }
+            if (visit_1[node2.getId()] == false) {
+                G.addNode(node2);
+                visit_1[node2.getId()] = true;
+            }
+
+            Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
+            G.addEdge(e);
+            break;
+        }
+        case 2: {
+            int x = currEntrance.getL1_s().first;
+            int y = currEntrance.getL1_s().second;
+            //Node node1(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
+            Node node1(x * sizeMap + y + 1, currEntrance.getIdCluster_1());
+            x = currEntrance.getL2_s().first;
+            y = currEntrance.getL2_s().second;
+            //Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
+            Node node2(x * sizeMap + y + 1, currEntrance.getIdCluster_2());
+            if (visit_1[node1.getId()] == false) {
+                G.addNode(node1);
+                visit_1[node1.getId()] = true;
+            }
+            if (visit_1[node2.getId()] == false) {
+                G.addNode(node2);
+                visit_1[node2.getId()] = true;
+            }
+
+            Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
+            G.addEdge(e);
+            break;
+        }
+        case 3: {
+            int x1 = currEntrance.getL1_s().first;
+            int y1 = currEntrance.getL1_s().second;
+
+            int x2 = currEntrance.getL1_e().first;
+            int y2 = currEntrance.getL1_e().second;
+
+
+            if (x1 != x2) {
+                //Node node1(findVertex(x1 + 1, y1, sizeMap), currEntrance.getIdCluster_1());
+                Node node1((x1 + 1) * sizeMap + y1 + 1, currEntrance.getIdCluster_1());
+                //Node node2(findVertex(currEntrance.getL2_s().first + 1, currEntrance.getL2_s().second, sizeMap), currEntrance.getIdCluster_2());
+                Node node2((currEntrance.getL2_s().first + 1) * sizeMap + currEntrance.getL2_s().second + 1, currEntrance.getIdCluster_2());
 
                 if (visit_1[node1.getId()] == false) {
                     G.addNode(node1);
@@ -383,17 +428,13 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
 
                 Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
                 G.addEdge(e);
-                break;
             }
-            case 2: {
-                int x = currEntrance.getL1_s().first;
-                int y = currEntrance.getL1_s().second;
-                //Node node1(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
-                Node node1(x * sizeMap + y + 1, currEntrance.getIdCluster_1());
-                x = currEntrance.getL2_s().first;
-                y = currEntrance.getL2_s().second;
-                //Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
-                Node node2(x * sizeMap + y + 1, currEntrance.getIdCluster_2());
+            else {
+                //Node node1(findVertex(x1, y1 + 1, sizeMap), currEntrance.getIdCluster_1());
+                Node node1(x1 * sizeMap + y1 + 1 + 1, currEntrance.getIdCluster_1());
+                //Node node2(findVertex(currEntrance.getL2_s().first, currEntrance.getL2_s().second + 1, sizeMap), currEntrance.getIdCluster_2());
+                Node node2(currEntrance.getL2_s().first * sizeMap + currEntrance.getL2_s().second + 1 + 1, currEntrance.getIdCluster_2());
+
                 if (visit_1[node1.getId()] == false) {
                     G.addNode(node1);
                     visit_1[node1.getId()] = true;
@@ -405,171 +446,22 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
 
                 Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
                 G.addEdge(e);
-                break;
             }
-            case 3: {
-                int x1 = currEntrance.getL1_s().first;
-                int y1 = currEntrance.getL1_s().second;
+            break;
+        }
+        case 4: {
+            int x1 = currEntrance.getL1_s().first;
+            int y1 = currEntrance.getL1_s().second;
 
-                int x2 = currEntrance.getL1_e().first;
-                int y2 = currEntrance.getL1_e().second;
-
-
-                if (x1 != x2) {
-                    //Node node1(findVertex(x1 + 1, y1, sizeMap), currEntrance.getIdCluster_1());
-                    Node node1((x1 + 1) * sizeMap + y1 + 1, currEntrance.getIdCluster_1());
-                    //Node node2(findVertex(currEntrance.getL2_s().first + 1, currEntrance.getL2_s().second, sizeMap), currEntrance.getIdCluster_2());
-                    Node node2((currEntrance.getL2_s().first + 1) * sizeMap + currEntrance.getL2_s().second + 1, currEntrance.getIdCluster_2());
-
-                    if (visit_1[node1.getId()] == false) {
-                        G.addNode(node1);
-                        visit_1[node1.getId()] = true;
-                    }
-                    if (visit_1[node2.getId()] == false) {
-                        G.addNode(node2);
-                        visit_1[node2.getId()] = true;
-                    }
-
-                    Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                    G.addEdge(e);
-                }
-                else {
-                    //Node node1(findVertex(x1, y1 + 1, sizeMap), currEntrance.getIdCluster_1());
-                    Node node1(x1 * sizeMap + y1 + 1 + 1, currEntrance.getIdCluster_1());
-                    //Node node2(findVertex(currEntrance.getL2_s().first, currEntrance.getL2_s().second + 1, sizeMap), currEntrance.getIdCluster_2());
-                    Node node2(currEntrance.getL2_s().first * sizeMap + currEntrance.getL2_s().second + 1 + 1, currEntrance.getIdCluster_2());
-
-                    if (visit_1[node1.getId()] == false) {
-                        G.addNode(node1);
-                        visit_1[node1.getId()] = true;
-                    }
-                    if (visit_1[node2.getId()] == false) {
-                        G.addNode(node2);
-                        visit_1[node2.getId()] = true;
-                    }
-
-                    Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                    G.addEdge(e);
-                }
-                break;
-            }
-            case 4: {
-                int x1 = currEntrance.getL1_s().first;
-                int y1 = currEntrance.getL1_s().second;
-
-                int x2 = currEntrance.getL1_e().first;
-                int y2 = currEntrance.getL1_e().second;
+            int x2 = currEntrance.getL1_e().first;
+            int y2 = currEntrance.getL1_e().second;
 
 
-                if (x1 != x2) {
-                    //Node node1(findVertex(x1 + 1, y1, sizeMap), currEntrance.getIdCluster_1());
-                    Node node1((x1 + 1)* sizeMap + y1 + 1, currEntrance.getIdCluster_1());
-                    //Node node2(findVertex(currEntrance.getL2_s().first + 1, currEntrance.getL2_s().second, sizeMap), currEntrance.getIdCluster_2());
-                    Node node2((currEntrance.getL2_s().first + 1)* sizeMap + currEntrance.getL2_s().second + 1, currEntrance.getIdCluster_2());
-
-                    if (visit_1[node1.getId()] == false) {
-                        G.addNode(node1);
-                        visit_1[node1.getId()] = true;
-                    }
-                    if (visit_1[node2.getId()] == false) {
-                        G.addNode(node2);
-                        visit_1[node2.getId()] = true;
-                    }
-
-                    //G.addNode(node1);
-                    //G.addNode(node2);
-                    Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                    G.addEdge(e);
-                }
-                else {
-                    //Node node1(findVertex(x1, y1 + 1, sizeMap), currEntrance.getIdCluster_1());
-                    Node node1(x1* sizeMap + y1 + 1 + 1, currEntrance.getIdCluster_1());
-                    //Node node2(findVertex(currEntrance.getL2_s().first, currEntrance.getL2_s().second + 1, sizeMap), currEntrance.getIdCluster_2());
-                    Node node2(currEntrance.getL2_s().first * sizeMap + currEntrance.getL2_s().second + 1 + 1, currEntrance.getIdCluster_2());
-
-                    if (visit_1[node1.getId()] == false) {
-                        G.addNode(node1);
-                        visit_1[node1.getId()] = true;
-                    }
-                    if (visit_1[node2.getId()] == false) {
-                        G.addNode(node2);
-                        visit_1[node2.getId()] = true;
-                    }
-
-                    //G.addNode(node1);
-                    //G.addNode(node2);
-                    Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                    G.addEdge(e);
-                }
-                break;
-            }
-            case 5: {
-                int x1 = currEntrance.getL1_s().first;
-                int y1 = currEntrance.getL1_s().second;
-
-                int x2 = currEntrance.getL1_e().first;
-                int y2 = currEntrance.getL1_e().second;
-
-
-                if (x1 != x2) {
-                    //Node node1(findVertex(x1 + 2, y1, sizeMap), currEntrance.getIdCluster_1());
-                    Node node1((x1 + 2)* sizeMap + y1 + 1, currEntrance.getIdCluster_1());
-                    //Node node2(findVertex(currEntrance.getL2_s().first + 2, currEntrance.getL2_s().second, sizeMap), currEntrance.getIdCluster_2());
-                    Node node2((currEntrance.getL2_s().first + 2)* sizeMap + currEntrance.getL2_s().second + 1, currEntrance.getIdCluster_2());
-
-                    if (visit_1[node1.getId()] == false) {
-                        G.addNode(node1);
-                        visit_1[node1.getId()] = true;
-                    }
-                    if (visit_1[node2.getId()] == false) {
-                        G.addNode(node2);
-                        visit_1[node2.getId()] = true;
-                    }
-
-                    //G.addNode(node1);
-                    //G.addNode(node2);
-                    Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                    G.addEdge(e);
-                }
-                else {
-                    //Node node1(findVertex(x1, y1 + 2, sizeMap), currEntrance.getIdCluster_1());
-                    Node node1(x1* sizeMap + y1 + 2 + 1, currEntrance.getIdCluster_1());
-                    //Node node2(findVertex(currEntrance.getL2_s().first, currEntrance.getL2_s().second + 2, sizeMap), currEntrance.getIdCluster_2());
-                    Node node2(currEntrance.getL2_s().first* sizeMap + currEntrance.getL2_s().second + 2 + 1, currEntrance.getIdCluster_2());
-
-                    if (visit_1[node1.getId()] == false) {
-                        G.addNode(node1);
-                        visit_1[node1.getId()] = true;
-                    }
-                    if (visit_1[node2.getId()] == false) {
-                        G.addNode(node2);
-                        visit_1[node2.getId()] = true;
-                    }
-
-                    //G.addNode(node1);
-                    //G.addNode(node2);
-                    Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                    G.addEdge(e);
-                }
-                break;
-            }
-            case 6: {
-                int x = currEntrance.getL1_s().first;
-                int y = currEntrance.getL1_s().second;
-                //Node node1(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
-                Node node1(x* sizeMap + y + 1, currEntrance.getIdCluster_1());
-                x = currEntrance.getL2_s().first;
-                y = currEntrance.getL2_s().second;
-                //Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
-                Node node2(x* sizeMap + y + 1, currEntrance.getIdCluster_2());
-                x = currEntrance.getL1_e().first;
-                y = currEntrance.getL1_e().second;
-                //Node node3(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
-                Node node3(x* sizeMap + y + 1, currEntrance.getIdCluster_1());
-                x = currEntrance.getL2_e().first;
-                y = currEntrance.getL2_e().second;
-                //Node node4(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
-                Node node4(x* sizeMap + y + 1, currEntrance.getIdCluster_2());
+            if (x1 != x2) {
+                //Node node1(findVertex(x1 + 1, y1, sizeMap), currEntrance.getIdCluster_1());
+                Node node1((x1 + 1)* sizeMap + y1 + 1, currEntrance.getIdCluster_1());
+                //Node node2(findVertex(currEntrance.getL2_s().first + 1, currEntrance.getL2_s().second, sizeMap), currEntrance.getIdCluster_2());
+                Node node2((currEntrance.getL2_s().first + 1)* sizeMap + currEntrance.getL2_s().second + 1, currEntrance.getIdCluster_2());
 
                 if (visit_1[node1.getId()] == false) {
                     G.addNode(node1);
@@ -578,41 +470,141 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
                 if (visit_1[node2.getId()] == false) {
                     G.addNode(node2);
                     visit_1[node2.getId()] = true;
-                }
-                if (visit_1[node3.getId()] == false) {
-                    G.addNode(node3);
-                    visit_1[node3.getId()] = true;
-                }
-                if (visit_1[node4.getId()] == false) {
-                    G.addNode(node4);
-                    visit_1[node4.getId()] = true;
                 }
 
                 //G.addNode(node1);
                 //G.addNode(node2);
-                //G.addNode(node3);
-                //G.addNode(node4);
                 Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                Edge e1(node3, node4, 1.0, INTER);
                 G.addEdge(e);
-                G.addEdge(e1);
-                break;
             }
-            default: {
-                std::cout << "Lenght of entrance > 6! ERORR!" << std::endl;
-                break;
+            else {
+                //Node node1(findVertex(x1, y1 + 1, sizeMap), currEntrance.getIdCluster_1());
+                Node node1(x1* sizeMap + y1 + 1 + 1, currEntrance.getIdCluster_1());
+                //Node node2(findVertex(currEntrance.getL2_s().first, currEntrance.getL2_s().second + 1, sizeMap), currEntrance.getIdCluster_2());
+                Node node2(currEntrance.getL2_s().first * sizeMap + currEntrance.getL2_s().second + 1 + 1, currEntrance.getIdCluster_2());
+
+                if (visit_1[node1.getId()] == false) {
+                    G.addNode(node1);
+                    visit_1[node1.getId()] = true;
+                }
+                if (visit_1[node2.getId()] == false) {
+                    G.addNode(node2);
+                    visit_1[node2.getId()] = true;
+                }
+
+                //G.addNode(node1);
+                //G.addNode(node2);
+                Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
+                G.addEdge(e);
             }
-            }
+            break;
         }
+        case 5: {
+            int x1 = currEntrance.getL1_s().first;
+            int y1 = currEntrance.getL1_s().second;
+
+            int x2 = currEntrance.getL1_e().first;
+            int y2 = currEntrance.getL1_e().second;
+
+
+            if (x1 != x2) {
+                //Node node1(findVertex(x1 + 2, y1, sizeMap), currEntrance.getIdCluster_1());
+                Node node1((x1 + 2)* sizeMap + y1 + 1, currEntrance.getIdCluster_1());
+                //Node node2(findVertex(currEntrance.getL2_s().first + 2, currEntrance.getL2_s().second, sizeMap), currEntrance.getIdCluster_2());
+                Node node2((currEntrance.getL2_s().first + 2)* sizeMap + currEntrance.getL2_s().second + 1, currEntrance.getIdCluster_2());
+
+                if (visit_1[node1.getId()] == false) {
+                    G.addNode(node1);
+                    visit_1[node1.getId()] = true;
+                }
+                if (visit_1[node2.getId()] == false) {
+                    G.addNode(node2);
+                    visit_1[node2.getId()] = true;
+                }
+
+                //G.addNode(node1);
+                //G.addNode(node2);
+                Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
+                G.addEdge(e);
+            }
+            else {
+                //Node node1(findVertex(x1, y1 + 2, sizeMap), currEntrance.getIdCluster_1());
+                Node node1(x1* sizeMap + y1 + 2 + 1, currEntrance.getIdCluster_1());
+                //Node node2(findVertex(currEntrance.getL2_s().first, currEntrance.getL2_s().second + 2, sizeMap), currEntrance.getIdCluster_2());
+                Node node2(currEntrance.getL2_s().first* sizeMap + currEntrance.getL2_s().second + 2 + 1, currEntrance.getIdCluster_2());
+
+                if (visit_1[node1.getId()] == false) {
+                    G.addNode(node1);
+                    visit_1[node1.getId()] = true;
+                }
+                if (visit_1[node2.getId()] == false) {
+                    G.addNode(node2);
+                    visit_1[node2.getId()] = true;
+                }
+
+                //G.addNode(node1);
+                //G.addNode(node2);
+                Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
+                G.addEdge(e);
+            }
+            break;
+        }
+        case 6: {
+            int x = currEntrance.getL1_s().first;
+            int y = currEntrance.getL1_s().second;
+            //Node node1(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
+            Node node1(x* sizeMap + y + 1, currEntrance.getIdCluster_1());
+            x = currEntrance.getL2_s().first;
+            y = currEntrance.getL2_s().second;
+            //Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
+            Node node2(x* sizeMap + y + 1, currEntrance.getIdCluster_2());
+            x = currEntrance.getL1_e().first;
+            y = currEntrance.getL1_e().second;
+            //Node node3(findVertex(x, y, sizeMap), currEntrance.getIdCluster_1());
+            Node node3(x* sizeMap + y + 1, currEntrance.getIdCluster_1());
+            x = currEntrance.getL2_e().first;
+            y = currEntrance.getL2_e().second;
+            //Node node4(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
+            Node node4(x* sizeMap + y + 1, currEntrance.getIdCluster_2());
+
+            if (visit_1[node1.getId()] == false) {
+                G.addNode(node1);
+                visit_1[node1.getId()] = true;
+            }
+            if (visit_1[node2.getId()] == false) {
+                G.addNode(node2);
+                visit_1[node2.getId()] = true;
+            }
+            if (visit_1[node3.getId()] == false) {
+                G.addNode(node3);
+                visit_1[node3.getId()] = true;
+            }
+            if (visit_1[node4.getId()] == false) {
+                G.addNode(node4);
+                visit_1[node4.getId()] = true;
+            }
+
+            //G.addNode(node1);
+            //G.addNode(node2);
+            //G.addNode(node3);
+            //G.addNode(node4);
+            Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
+            Edge e1(node3, node4, 1.0, INTER);
+            G.addEdge(e);
+            G.addEdge(e1);
+            break;
+        }
+        default: {
+            std::cout << "Lenght of entrance > 6! ERORR!" << std::endl;
+            break;
+        }
+        }
+    }
     
     visit_1.clear();
 
     // intra ребра
-    std::vector<bool> visit_2;
-    int tmp = sizeMap * sizeMap; 
-    for (int i = 0; i < tmp; i++) {
-        visit_2.push_back(false);
-    }
+    std::vector<bool> visit_2(sizeMap* sizeMap, false);
 
     for (int i = 0; i < G.getNodes().size(); i++) {
         Node currNode = G.getNodes()[i];
@@ -1047,69 +1039,69 @@ int main()
     //Gdiplus::GdiplusShutdown(gdiplusToken);
  
 
-    auto impass = read_image(TEXT("input_500_500_3.bmp"));
-    int size = impass.back();
-    impass.pop_back();
-    Map maze(size * size, impass);
-    std::vector<Cluster> clusters = maze.clusteringMaze(25); // !
-    std::cout << "I AM GOOD!" << std::endl;
+    //auto impass = read_image(TEXT("input_500_500_3.bmp"));
+    //int size = impass.back();
+    //impass.pop_back();
+    //Map maze(size * size, impass);
+    //std::vector<Cluster> clusters = maze.clusteringMaze(25); // !
+    //std::cout << "I AM GOOD!" << std::endl;
 
-    double start = omp_get_wtime();
-    std::vector<Entrance> entrance = findEnterance(clusters, maze);
-    double end = omp_get_wtime();
-    std::cout << "time findEntrance = " << end - start << std::endl;
-    std::cout << "I AM GOOD!" << std::endl;
-    Graph GNew;
+    //double start = omp_get_wtime();
+    //std::vector<Entrance> entrance = findEnterance(clusters, maze);
+    //double end = omp_get_wtime();
+    //std::cout << "time findEntrance = " << end - start << std::endl;
+    //std::cout << "I AM GOOD!" << std::endl;
+    //Graph GNew;
 
-    start = omp_get_wtime();
-    createGraph(entrance, maze.getSize(), maze, GNew);
-    end = omp_get_wtime();
-    std::cout << "time crateGraph = " << end - start << std::endl;
+    //start = omp_get_wtime();
+    //createGraph(entrance, maze.getSize(), maze, GNew);
+    //end = omp_get_wtime();
+    //std::cout << "time crateGraph = " << end - start << std::endl;
 
-    std::cout << "I AM GOOD!" << std::endl;
-    std::cout << "SIZE = " << GNew.getNodes().size() << std::endl << std::endl;
-    //for (int i = 0; i < GNew.getNodes().size(); i++)
-        //std::cout << GNew.getNodes()[i].getId() << " from cluster " << GNew.getNodes()[i].getClusterId() << std::endl;
-    Node n1(250, 25);
-    Node n2(249750,2475);
+    //std::cout << "I AM GOOD!" << std::endl;
+    //std::cout << "SIZE = " << GNew.getNodes().size() << std::endl << std::endl;
+    ////for (int i = 0; i < GNew.getNodes().size(); i++)
+    //    //std::cout << GNew.getNodes()[i].getId() << " from cluster " << GNew.getNodes()[i].getClusterId() << std::endl;
+    //Node n1(250, 25);
+    //Node n2(249750,2475);
 
-    GNew.addNodeAndEdges(n1, maze.getSize());
-    GNew.addNodeAndEdges(n2, maze.getSize());
-    std::cout << "I AM GOOD!" << std::endl;
+    //GNew.addNodeAndEdges(n1, maze.getSize());
+    //GNew.addNodeAndEdges(n2, maze.getSize());
+    //std::cout << "I AM GOOD!" << std::endl;
 
-    start = omp_get_wtime();
-    std::pair<double, std::vector<Node>> Dijkstra = createFullPath(maze, GNew, clusters, n1, n2);
-    end = omp_get_wtime();
-    std::cout << "time Dijkstra = " << end - start << std::endl;
+    //start = omp_get_wtime();
+    //std::pair<double, std::vector<Node>> Dijkstra = createFullPath(maze, GNew, clusters, n1, n2);
+    //end = omp_get_wtime();
+    //std::cout << "time Dijkstra = " << end - start << std::endl;
 
-    std::cout << "I AM GOOD!" << std::endl;
+    //std::cout << "I AM GOOD!" << std::endl;
 
-    start = omp_get_wtime();
-    std::pair<double, std::vector<Node>> AStar = createFullPathAStar(maze, GNew, clusters, n1, n2);
-    end = omp_get_wtime();
-    std::cout << "time AStar = " << end - start << std::endl;
+    //start = omp_get_wtime();
+    //std::pair<double, std::vector<Node>> AStar = createFullPathAStar(maze, GNew, clusters, n1, n2);
+    //end = omp_get_wtime();
+    //std::cout << "time AStar = " << end - start << std::endl;
 
-    std::cout << "I AM GOOD!" << std::endl;
-    draw_path(n1, n2, Dijkstra.second, maze.getSize(), TEXT("input_500_500_3.bmp"), TEXT("outputDijkstra_500_500_3_cluster_10.bmp"));
-    draw_path(n1, n2, AStar.second, maze.getSize(), TEXT("input_500_500_3.bmp"), TEXT("outAStar_500_500_3_cluster_10.bmp"));
+    //std::cout << "I AM GOOD!" << std::endl;
+    //draw_path(n1, n2, Dijkstra.second, maze.getSize(), TEXT("input_500_500_3.bmp"), TEXT("outputDijkstra_500_500_3_cluster_10.bmp"));
+    //draw_path(n1, n2, AStar.second, maze.getSize(), TEXT("input_500_500_3.bmp"), TEXT("outAStar_500_500_3_cluster_10.bmp"));
 
-    /*std::vector<int> impass = {};
+    std::vector<int> impass = {};
     Map maze(250000, impass);
     std::vector<Cluster> clusters = maze.clusteringMaze(10); // !
     std::cout << "I AM GOOD!" << std::endl;
     std::vector<Entrance> entrance = findEnterance(clusters, maze);
     std::cout << "I AM GOOD!" << std::endl;
     Graph GNew;
-    GNew = createGraph(entrance, maze.getSize(), maze);
+    createGraph(entrance, maze.getSize(), maze, GNew);
     std::cout << "I AM GOOD!" << std::endl;
     Node n1(1, 1);
     Node n2(250000, 2500);
     GNew.addNodeAndEdges(n1, maze.getSize());
     GNew.addNodeAndEdges(n2, maze.getSize());
     std::cout << "I AM GOOD!" << std::endl;
-    std::pair<int, std::vector<Node>> path = AbstractDistance(GNew, n1, n2);
-    std::pair<double, std::vector<Node>> testFullPath = createFullPath(maze, GNew, clusters, n1, n2);
-    std::pair<double, std::vector<Node>> testFullPathAStar = createFullPathAStar(maze, GNew, clusters, n1, n2);*/
+    //std::pair<int, std::vector<Node>> path = AbstractDistance(GNew, n1, n2);
+    //std::pair<double, std::vector<Node>> testFullPath = createFullPath(maze, GNew, clusters, n1, n2);
+    std::pair<double, std::vector<Node>> testFullPathAStar = createFullPathAStar(maze, GNew, clusters, n1, n2);
     return 0;
 }
 

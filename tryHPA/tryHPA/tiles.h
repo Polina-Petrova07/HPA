@@ -91,8 +91,7 @@ public:
 		edges.push_back(e);
 	}
 	~Graph() {
-		this->nodes.clear();
-		this->edges.clear();
+		
 	}
 	void addNodeAndEdges(Node node, int sizeMap) { // может быть вызвана только после создания графа
 		int currId = node.getClusterId();
