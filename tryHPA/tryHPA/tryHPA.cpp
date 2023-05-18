@@ -374,21 +374,21 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
             Node node2(x * sizeMap + y + 1, currEntrance.getIdCluster_2());
 
             if (visit_1[node1.getId()] == false) {
-                //G.addNode(node1); заменено на две нижние строчки
-                G.getNodes()[counterNodes] = node1;
+                G.addNode(node1);
+                //G.getNodes()[counterNodes] = node1;
                 counterNodes++;
                 visit_1[node1.getId()] = true;
             }
             if (visit_1[node2.getId()] == false) {
-                //G.addNode(node2);
-                G.getNodes()[counterNodes] = node2;
+                G.addNode(node2);
+                //G.getNodes()[counterNodes] = node2;
                 counterNodes++;
                 visit_1[node2.getId()] = true;
             }
 
             Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-            //G.addEdge(e);
-            G.getEdges()[counterEdges] = e;
+            G.addEdge(e);
+            //G.getEdges()[counterEdges] = e;
             counterEdges++;
             break;
         }
@@ -402,21 +402,21 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
             //Node node2(findVertex(x, y, sizeMap), currEntrance.getIdCluster_2());
             Node node2(x * sizeMap + y + 1, currEntrance.getIdCluster_2());
             if (visit_1[node1.getId()] == false) {
-                //G.addNode(node1);
-                G.getNodes()[counterNodes] = node1;
+                G.addNode(node1);
+                //G.getNodes()[counterNodes] = node1;
                 counterNodes++;
                 visit_1[node1.getId()] = true;
             }
             if (visit_1[node2.getId()] == false) {
-                //G.addNode(node2);
-                G.getNodes()[counterNodes] = node2;
+                G.addNode(node2);
+                //G.getNodes()[counterNodes] = node2;
                 counterNodes++;
                 visit_1[node2.getId()] = true;
             }
 
             Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-            //G.addEdge(e);
-            G.getEdges()[counterEdges] = e;
+            G.addEdge(e);
+            //G.getEdges()[counterEdges] = e;
             counterEdges++;
             break;
         }
@@ -435,21 +435,21 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
                 Node node2((currEntrance.getL2_s().first + 1) * sizeMap + currEntrance.getL2_s().second + 1, currEntrance.getIdCluster_2());
 
                 if (visit_1[node1.getId()] == false) {
-                    //G.addNode(node1);
-                    G.getNodes()[counterNodes] = node1;
+                    G.addNode(node1);
+                    //G.getNodes()[counterNodes] = node1;
                     counterNodes++;
                     visit_1[node1.getId()] = true;
                 }
                 if (visit_1[node2.getId()] == false) {
-                    //G.addNode(node2);
-                    G.getNodes()[counterNodes] = node2;
+                    G.addNode(node2);
+                    //G.getNodes()[counterNodes] = node2;
                     counterNodes++;
                     visit_1[node2.getId()] = true;
                 }
 
                 Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                //G.addEdge(e);
-                G.getEdges()[counterEdges] = e;
+                G.addEdge(e);
+                //G.getEdges()[counterEdges] = e;
                 counterEdges++;
             }
             else {
@@ -459,21 +459,21 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
                 Node node2(currEntrance.getL2_s().first * sizeMap + currEntrance.getL2_s().second + 1 + 1, currEntrance.getIdCluster_2());
 
                 if (visit_1[node1.getId()] == false) {
-                    //G.addNode(node1);
-                    G.getNodes()[counterNodes] = node1;
+                    G.addNode(node1);
+                    //G.getNodes()[counterNodes] = node1;
                     counterNodes++;
                     visit_1[node1.getId()] = true;
                 }
                 if (visit_1[node2.getId()] == false) {
-                    //G.addNode(node2);
-                    G.getNodes()[counterNodes] = node2;
+                    G.addNode(node2);
+                    //G.getNodes()[counterNodes] = node2;
                     counterNodes++;
                     visit_1[node2.getId()] = true;
                 }
 
                 Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                //G.addEdge(e);
-                G.getEdges()[counterEdges] = e;
+                G.addEdge(e);
+                //G.getEdges()[counterEdges] = e;
                 counterEdges++;
             }
             break;
@@ -493,14 +493,14 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
                 Node node2((currEntrance.getL2_s().first + 1)* sizeMap + currEntrance.getL2_s().second + 1, currEntrance.getIdCluster_2());
 
                 if (visit_1[node1.getId()] == false) {
-                    //G.addNode(node1);
-                    G.getNodes()[counterNodes] = node1;
+                    G.addNode(node1);
+                    //G.getNodes()[counterNodes] = node1;
                     counterNodes++;
                     visit_1[node1.getId()] = true;
                 }
                 if (visit_1[node2.getId()] == false) {
-                    //G.addNode(node2);
-                    G.getNodes()[counterNodes] = node2;
+                    G.addNode(node2);
+                    //G.getNodes()[counterNodes] = node2;
                     counterNodes++;
                     visit_1[node2.getId()] = true;
                 }
@@ -508,8 +508,8 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
                 //G.addNode(node1);
                 //G.addNode(node2);
                 Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                //G.addEdge(e);
-                G.getEdges()[counterEdges] = e;
+                G.addEdge(e);
+                //G.getEdges()[counterEdges] = e;
                 counterEdges++;
             }
             else {
@@ -519,14 +519,14 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
                 Node node2(currEntrance.getL2_s().first * sizeMap + currEntrance.getL2_s().second + 1 + 1, currEntrance.getIdCluster_2());
 
                 if (visit_1[node1.getId()] == false) {
-                    //G.addNode(node1);
-                    G.getNodes()[counterNodes] = node1;
+                    G.addNode(node1);
+                    //G.getNodes()[counterNodes] = node1;
                     counterNodes++;
                     visit_1[node1.getId()] = true;
                 }
                 if (visit_1[node2.getId()] == false) {
-                    //G.addNode(node2);
-                    G.getNodes()[counterNodes] = node2;
+                    G.addNode(node2);
+                    //G.getNodes()[counterNodes] = node2;
                     counterNodes++;
                     visit_1[node2.getId()] = true;
                 }
@@ -534,8 +534,8 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
                 //G.addNode(node1);
                 //G.addNode(node2);
                 Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                //G.addEdge(e);
-                G.getEdges()[counterEdges] = e;
+                G.addEdge(e);
+                //G.getEdges()[counterEdges] = e;
                 counterEdges++;
             }
             break;
@@ -555,14 +555,14 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
                 Node node2((currEntrance.getL2_s().first + 2)* sizeMap + currEntrance.getL2_s().second + 1, currEntrance.getIdCluster_2());
 
                 if (visit_1[node1.getId()] == false) {
-                    //G.addNode(node1);
-                    G.getNodes()[counterNodes] = node1;
+                    G.addNode(node1);
+                    //G.getNodes()[counterNodes] = node1;
                     counterNodes++;
                     visit_1[node1.getId()] = true;
                 }
                 if (visit_1[node2.getId()] == false) {
-                    //G.addNode(node2);
-                    G.getNodes()[counterNodes] = node2;
+                    G.addNode(node2);
+                    //G.getNodes()[counterNodes] = node2;
                     counterNodes++;
                     visit_1[node2.getId()] = true;
                 }
@@ -570,8 +570,8 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
                 //G.addNode(node1);
                 //G.addNode(node2);
                 Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                //G.addEdge(e);
-                G.getEdges()[counterEdges] = e;
+                G.addEdge(e);
+                //G.getEdges()[counterEdges] = e;
                 counterEdges++;
             }
             else {
@@ -581,14 +581,14 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
                 Node node2(currEntrance.getL2_s().first* sizeMap + currEntrance.getL2_s().second + 2 + 1, currEntrance.getIdCluster_2());
 
                 if (visit_1[node1.getId()] == false) {
-                    //G.addNode(node1);
-                    G.getNodes()[counterNodes] = node1;
+                    G.addNode(node1);
+                    //G.getNodes()[counterNodes] = node1;
                     counterNodes++;
                     visit_1[node1.getId()] = true;
                 }
                 if (visit_1[node2.getId()] == false) {
-                    //G.addNode(node2);
-                    G.getNodes()[counterNodes] = node2;
+                    G.addNode(node2);
+                    //G.getNodes()[counterNodes] = node2;
                     counterNodes++;
                     visit_1[node2.getId()] = true;
                 }
@@ -596,8 +596,8 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
                 //G.addNode(node1);
                 //G.addNode(node2);
                 Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
-                //G.addEdge(e);
-                G.getEdges()[counterEdges] = e;
+                G.addEdge(e);
+                //G.getEdges()[counterEdges] = e;
                 counterEdges++;
             }
             break;
@@ -621,26 +621,26 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
             Node node4(x* sizeMap + y + 1, currEntrance.getIdCluster_2());
 
             if (visit_1[node1.getId()] == false) {
-                //G.addNode(node1);
-                G.getNodes()[counterNodes] = node1;
+                G.addNode(node1);
+                //G.getNodes()[counterNodes] = node1;
                 counterNodes++;
                 visit_1[node1.getId()] = true;
             }
             if (visit_1[node2.getId()] == false) {
-                //G.addNode(node2);
-                G.getNodes()[counterNodes] = node2;
+                G.addNode(node2);
+                //G.getNodes()[counterNodes] = node2;
                 counterNodes++;
                 visit_1[node2.getId()] = true;
             }
             if (visit_1[node3.getId()] == false) {
-                //G.addNode(node3);
-                G.getNodes()[counterNodes] = node3;
+                G.addNode(node3);
+                //G.getNodes()[counterNodes] = node3;
                 counterNodes++;
                 visit_1[node3.getId()] = true;
             }
             if (visit_1[node4.getId()] == false) {
-                //G.addNode(node4);
-                G.getNodes()[counterNodes] = node4;
+                G.addNode(node4);
+                //G.getNodes()[counterNodes] = node4;
                 counterNodes++;
                 visit_1[node4.getId()] = true;
             }
@@ -651,11 +651,11 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
             //G.addNode(node4);
             Edge e(node1, node2, 1.0, INTER);  // вес ребра = 1, потому что оно INTER
             Edge e1(node3, node4, 1.0, INTER);
-            //G.addEdge(e);
-            G.getEdges()[counterEdges] = e;
+            G.addEdge(e);
+            //G.getEdges()[counterEdges] = e;
             counterEdges++;
-            //G.addEdge(e1);
-            G.getEdges()[counterEdges] = e1;
+            G.addEdge(e1);
+            //G.getEdges()[counterEdges] = e1;
             counterEdges++;
             break;
         }
@@ -691,12 +691,16 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
             int currFinish = nodesInCluster[j].getId();
             int currDist = manhettenDist(sizeMap, currVert, currFinish);  // поиск манхетановского расстояния от currNode до всех осатльных, которые нашлись в таком же кластере.
             Edge currE(currNode, nodesInCluster[j], currDist, INTRA);
-            //G.addEdge(currE); 
-            G.getEdges()[counterEdges] = currE;
+            G.addEdge(currE); 
+            //G.getEdges()[counterEdges] = currE;
             counterEdges++;
         }
         // потом уже пройденная становится curr 
     }
+    G.getNodes().resize(counterNodes);
+    G.getEdges().resize(counterEdges);
+
+    //нужно удалить лишние элементы!!!
     //return G;
 }
 // поиск расстояний между двумя вершинами
@@ -1152,9 +1156,11 @@ int main()
     //draw_path(n1, n2, Dijkstra.second, maze.getSize(), TEXT("input_500_500_3.bmp"), TEXT("outputDijkstra_500_500_3_cluster_10.bmp"));
     //draw_path(n1, n2, AStar.second, maze.getSize(), TEXT("input_500_500_3.bmp"), TEXT("outAStar_500_500_3_cluster_10.bmp"));
 
+
+
     std::vector<int> impass = {};
-    Map maze(250000, impass);
-    int clusterSize = 50;  // !
+    Map maze(10000, impass);
+    int clusterSize = 10;  // !
     std::vector<Cluster> clusters = maze.clusteringMaze(clusterSize);
     std::cout << "I AM GOOD!" << std::endl;
     std::vector<Entrance> entrance = findEnterance(clusters, maze);
@@ -1167,13 +1173,23 @@ int main()
     
     std::cout << "I AM GOOD!" << std::endl;
     Node n1(1, 1);
-    Node n2(250000, 2500);
+    Node n2(10000, 100);
     GNew.addNodeAndEdges(n1, maze.getSize());
     GNew.addNodeAndEdges(n2, maze.getSize());
     std::cout << "I AM GOOD!" << std::endl;
     //std::pair<int, std::vector<Node>> path = AbstractDistance(GNew, n1, n2);
     //std::pair<double, std::vector<Node>> testFullPath = createFullPath(maze, GNew, clusters, n1, n2);
     std::pair<double, std::vector<Node>> testFullPathAStar = createFullPathAStar(maze, GNew, clusters, n1, n2);
+
+    /*std::vector<int> v1;
+    v1.reserve(10);
+    v1.push_back(7);
+    std::cout << "capacity = "<<v1.capacity() << std::endl;
+    std::cout <<"size = "<< v1.size() << std::endl;
+    v1.resize(2);
+    std::cout << "capacity = " << v1.capacity() << std::endl;
+    std::cout << "size = " << v1.size() << std::endl;*/
+
     return 0;
 }
 

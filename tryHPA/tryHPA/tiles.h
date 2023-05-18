@@ -107,7 +107,7 @@ public:
 		}
 		nodes.push_back(node);
 	}
-	std::vector<std::pair<int, int>> getNovigationMask() {
+	std::vector<std::pair<int, int>>& getNovigationMask() {
 		std::vector<std::pair<int, int>> navigation(nodes.size()); // первой значение - ID верщины в общей матрице, вторая - номер в матрице смежности для абстрактоного графа
 		for (int i = 0; i < nodes.size(); i++) {
 			navigation[i].first = nodes[i].getId();
