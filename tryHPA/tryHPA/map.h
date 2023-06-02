@@ -194,7 +194,7 @@ public:
 
 	int getSize() { return this->size; }
 	std::vector<std::vector<int>>& getMaze() { return this->maze; };
-
+	int getItem(int i, int j) { return this->maze[i][j]; }
 	void setItem(int i, int j, int value) {
 		this->maze[i][j] = value;
 	}
@@ -277,16 +277,6 @@ public:
 		Cluster neededCluster = clusters[clusterId];
 		std::pair<int, int> start = neededCluster.getStart();
 		std::pair<int, int> end = neededCluster.getEnd();
-		/*std::vector<int> vertex;
-		for (int i = start.first; i <= end.first; i++) {
-			for (int j = start.second; j <= end.second; j++) {
-				vertex.push_back(this->maze[i][j]);
-			}
-		}
-		std::vector<std::pair<int, int>> navigation;
-		for (int i = 0; i < vertex.size(); i++) {
-			navigation.push_back(std::make_pair(vertex[i], i));
-		}*/
 		int** matrix = new int* [clusterSize];
 		for (int i = 0; i < clusterSize; i++) {
 			matrix[i] = new int[clusterSize];
@@ -301,6 +291,40 @@ public:
 			mPosX++;
 			mPosY = 0;
 		}
+		return matrix;
+	}
+
+	double** getFullMatrix() {
+		int n = size * size;
+		double** matrix = new double* [n];
+		for (int i = 0; i < n; i++) {
+			matrix[i] = new double[n];
+		}
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				matrix[i][j] = 0;
+			}
+		}
+
+		int vert = 0;
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				std::vector<std::pair<int, double>> currentNeighbors = this->findNeighbors(maze[i][j]);
+				for (int k = 0; k < currentNeighbors.size(); k++) {
+					matrix[vert][currentNeighbors[k].first-1] = currentNeighbors[k].second;
+				}
+				vert++;
+			}
+		}
+
+		//std::cout << "NEW MATRIX:" << std::endl;
+		//for (int i = 0; i < n; i++) {
+		//	for (int j = 0; j < n; j++) {
+		//		std::cout << matrix[i][j] << " ";
+		//	}
+		//	std::cout << std::endl;
+		//}
 		return matrix;
 	}
 	void printMaze() {

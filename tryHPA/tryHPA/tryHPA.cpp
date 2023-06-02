@@ -15,7 +15,7 @@
 */
 #include <iostream>
 #include <queue>
-#include<algorithm>
+#include <algorithm>
 #include "tiles.h"
 #include "DrawFunctions.h"
 #include <omp.h>
@@ -700,9 +700,10 @@ void createGraph(std::vector<Entrance>& entrances, int sizeMap, /**/Map &maze /*
     G.getNodes().resize(counterNodes);
     G.getEdges().resize(counterEdges);
 
-    //нужно удалить лишние элементы!!!
     //return G;
 }
+
+
 // поиск расстояний между двумя вершинами
 std::pair<int, std::vector<Node>> AbstractDistance(Graph G, Node start, Node goal) {
     int startP = start.getId();
@@ -1089,6 +1090,58 @@ int approxNumNodes(int sizeMap, int sizeCluster) {
     return value;
 }
 
+
+double defaultDijkstra(double** matrix, int size, int start, int goal) {
+    double time, t1, t2;
+
+    start--;
+    goal--;
+    t1 = omp_get_wtime();
+
+    std::vector<double> dist(size, INF);
+    dist[start] = 0;
+    std::priority_queue<std::pair<double, int>> q; // длина, веришина
+    q.push(std::make_pair(0, start));
+    while (!q.empty()) {
+        double len = -q.top().first;
+        int v = q.top().second;
+        q.pop();
+        if (len > dist[v]) continue;
+        for (int i = 0; i < size; i++) {
+            int to = i;
+            double lenght = matrix[v][i];
+            if (dist[to] > dist[v] + lenght && lenght > 0) {
+                dist[to] = dist[v] + lenght;
+                q.push(std::make_pair(-dist[to], to));
+            }
+        }
+    }
+    double d = dist[goal];
+
+    t2 = omp_get_wtime();
+    // восстановление пути
+
+    /*std::vector<int> path;
+    path.push_back(goal + 1);
+    double weight = dist[goal];
+    int k = 1;
+    while (goal != start) {
+        for (int i = 0; i < size; i++)
+            if (matrix[i][goal] != 0) {
+                double temp = weight - matrix[i][goal];
+                if (temp == dist[i]) {
+                    weight = temp;
+                    goal = i;
+                    path.push_back(i + 1);
+                    k++;
+                }
+            }
+    }
+    std::reverse(path.begin(), path.end());*/
+    
+    time = t2 - t1;
+    return time;
+}
 int main()
 {
 
@@ -1110,11 +1163,12 @@ int main()
     //Gdiplus::GdiplusShutdown(gdiplusToken);
  
 
-    //auto impass = read_image(TEXT("input_500_500_3.bmp"));
+    //auto impass = read_image(TEXT("input_300_300_1.bmp"));
     //int size = impass.back();
     //impass.pop_back();
     //Map maze(size * size, impass);
-    //std::vector<Cluster> clusters = maze.clusteringMaze(50); // !
+    //int clusterSize = 10;
+    //std::vector<Cluster> clusters = maze.clusteringMaze(clusterSize); // !
     //std::cout << "I AM GOOD!" << std::endl;
 
     //double start = omp_get_wtime();
@@ -1123,9 +1177,9 @@ int main()
     //std::cout << "time findEntrance = " << end - start << std::endl;
     //std::cout << "I AM GOOD!" << std::endl;
     //Graph GNew;
-
+    //int numNodes = approxNumNodes(maze.getSize(), clusterSize);
     //start = omp_get_wtime();
-    //createGraph(entrance, maze.getSize(), maze, GNew);
+    //createGraph(entrance, maze.getSize(), maze, GNew, numNodes);
     //end = omp_get_wtime();
     //std::cout << "time crateGraph = " << end - start << std::endl;
     //std::cout << "Nodes = " << GNew.getNodes().size() << std::endl;
@@ -1133,8 +1187,8 @@ int main()
     //std::cout << "I AM GOOD!" << std::endl;
     ////for (int i = 0; i < GNew.getNodes().size(); i++)
     //    //std::cout << GNew.getNodes()[i].getId() << " from cluster " << GNew.getNodes()[i].getClusterId() << std::endl;
-    //Node n1(250, 25);
-    //Node n2(249750,2475);
+    //Node n1(1, 1);
+    //Node n2(90000,900);
 
     //GNew.addNodeAndEdges(n1, maze.getSize());
     //GNew.addNodeAndEdges(n2, maze.getSize());
@@ -1153,42 +1207,58 @@ int main()
     //std::cout << "time AStar = " << end - start << std::endl;
 
     //std::cout << "I AM GOOD!" << std::endl;
-    //draw_path(n1, n2, Dijkstra.second, maze.getSize(), TEXT("input_500_500_3.bmp"), TEXT("outputDijkstra_500_500_3_cluster_10.bmp"));
-    //draw_path(n1, n2, AStar.second, maze.getSize(), TEXT("input_500_500_3.bmp"), TEXT("outAStar_500_500_3_cluster_10.bmp"));
+    //draw_path(n1, n2, Dijkstra.second, maze.getSize(), TEXT("input_300_300_1.bmp"), TEXT("outputDijkstra_300_300_1_cluster_10.bmp"));
+    //draw_path(n1, n2, AStar.second, maze.getSize(), TEXT("input_300_300_1.bmp"), TEXT("outAStar_300_300_1_cluster_10.bmp"));
 
 
+    //std::vector<int> impass = {};
+    //Map maze(1600, impass);
+    //int clusterSize = 10;  // !
 
-    std::vector<int> impass = {};
-    Map maze(10000, impass);
-    int clusterSize = 10;  // !
-    std::vector<Cluster> clusters = maze.clusteringMaze(clusterSize);
-    std::cout << "I AM GOOD!" << std::endl;
-    std::vector<Entrance> entrance = findEnterance(clusters, maze);
-    std::cout << "I AM GOOD!" << std::endl;
-    Graph GNew;
-    int numNodes = approxNumNodes(maze.getSize(), clusterSize);
-    createGraph(entrance, maze.getSize(), maze, GNew, numNodes);
-    std::cout << "Nodes = " << GNew.getNodes().size() << std::endl;
-    std::cout << "Eges = " << GNew.getEdges().size() << std::endl;
-    
-    std::cout << "I AM GOOD!" << std::endl;
-    Node n1(1, 1);
-    Node n2(10000, 100);
-    GNew.addNodeAndEdges(n1, maze.getSize());
-    GNew.addNodeAndEdges(n2, maze.getSize());
-    std::cout << "I AM GOOD!" << std::endl;
-    //std::pair<int, std::vector<Node>> path = AbstractDistance(GNew, n1, n2);
-    //std::pair<double, std::vector<Node>> testFullPath = createFullPath(maze, GNew, clusters, n1, n2);
-    std::pair<double, std::vector<Node>> testFullPathAStar = createFullPathAStar(maze, GNew, clusters, n1, n2);
+    //std::vector<Cluster> clusters = maze.clusteringMaze(clusterSize);
+    //std::cout << "I AM GOOD!" << std::endl;
 
-    /*std::vector<int> v1;
-    v1.reserve(10);
-    v1.push_back(7);
-    std::cout << "capacity = "<<v1.capacity() << std::endl;
-    std::cout <<"size = "<< v1.size() << std::endl;
-    v1.resize(2);
-    std::cout << "capacity = " << v1.capacity() << std::endl;
-    std::cout << "size = " << v1.size() << std::endl;*/
+    ////double start = omp_get_wtime();
+    //std::vector<Entrance> entrance = findEnterance(clusters, maze);
+    ////double end = omp_get_wtime();
+    ////std::cout << "time findEntrance = " << end - start << std::endl;
+    //std::cout << "I AM GOOD!" << std::endl;
+
+    //Graph GNew;
+    //int numNodes = approxNumNodes(maze.getSize(), clusterSize);
+
+    ////start = omp_get_wtime();
+    //createGraph(entrance, maze.getSize(), maze, GNew, numNodes);
+    ////end = omp_get_wtime();
+    ////std::cout << "time crateGraph = " << end - start << std::endl;
+    //std::cout << "Nodes = " << GNew.getNodes().size() << std::endl;
+    //std::cout << "Eges = " << GNew.getEdges().size() << std::endl;
+    //
+    //std::cout << "I AM GOOD!" << std::endl;
+    //Node n1(1, 1);
+    //Node n2(250000, 2500);
+    //GNew.addNodeAndEdges(n1, maze.getSize());
+    //GNew.addNodeAndEdges(n2, maze.getSize());
+    //std::cout << "I AM GOOD!" << std::endl;
+    //
+    ////start = omp_get_wtime();
+    //std::pair<double, std::vector<Node>> Dijkstra = createFullPath(maze, GNew, clusters, n1, n2);
+    ////end = omp_get_wtime();
+    ////std::cout << "time Dijkstra = " << end - start << std::endl;
+
+    //std::cout << "I AM GOOD!" << std::endl;
+
+    ////start = omp_get_wtime();
+    //std::pair<double, std::vector<Node>> AStar = createFullPathAStar(maze, GNew, clusters, n1, n2);
+    ////end = omp_get_wtime();
+    ////std::cout << "time AStar = " << end - start << std::endl;
+
+
+    int n = 90000;
+    Map maze(n);
+    int**  matrix = maze.getFullMatrix();
+    double time = defaultDijkstra(matrix, n, 1, n);
+    std::cout << "defaultDijkstra time = " << time << std::endl;
 
     return 0;
 }
