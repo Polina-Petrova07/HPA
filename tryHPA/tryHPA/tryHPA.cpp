@@ -19,6 +19,7 @@
 #include "tiles.h"
 #include "DrawFunctions.h"
 #include <omp.h>
+#include "defaultDijkstra.h"
 //#include <Windows.h>
 //#include <wincodec.h>
 //#include <gdiplus.h>
@@ -1254,12 +1255,16 @@ int main()
     ////std::cout << "time AStar = " << end - start << std::endl;
 
 
-    int n = 90000;
+    int n = 9;
     Map maze(n);
-    int**  matrix = maze.getFullMatrix();
+    double**  matrix = maze.getFullMatrix();
     double time = defaultDijkstra(matrix, n, 1, n);
     std::cout << "defaultDijkstra time = " << time << std::endl;
 
+    CRSType newType(maze);
+    newType.printData();
+
+    delete matrix;
     return 0;
 }
 
