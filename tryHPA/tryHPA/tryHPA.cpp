@@ -23,7 +23,7 @@
 //#include <Windows.h>
 //#include <wincodec.h>
 //#include <gdiplus.h>
-const int INF = 1000000000;
+//const int INF = 1000000000;
 void tmpPtintMatrix(double** m, int n) {
     std::cout << std::endl << std::endl;
     std::cout << " === PRINT MATRIX === " << std::endl;
@@ -1263,6 +1263,8 @@ int main()
 
     CRSType newType(maze);
     newType.printData();
+    double d = newType.Dijkstra(1, 9);
+
 
     delete matrix;
     return 0;

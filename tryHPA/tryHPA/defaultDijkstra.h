@@ -1,9 +1,10 @@
 #pragma once
 #include "map.h"
+const int INF = 1000000000;
 
 class CRSType {
 private:
-	std::vector<int> Adjncy;
+	std::vector<int> Adjncy; // neigbors
 	std::vector<int> Xadj;
 	std::vector<double> Eweights;
 public:
@@ -21,8 +22,34 @@ public:
 			}
 		}
 	}
-	void Dijkstra() {
+	double Dijkstra(int start, int goal) {
+		start--;
+		goal--;
+		int numNodes = this->Xadj.size() - 1;
+		std::vector<double> dist(numNodes, INF);
+		dist[start] = 0;
+		std::priority_queue<std::pair<double, int>> q;
+		q.push(std::make_pair(0, start));
+		//std::pair<int, int> indexV = std::make_pair(this->Xadj[start], this->Xadj[start + 1]);
+		while (!q.empty()) {
+			double len = -q.top().first;
+			int v = q.top().second;
+			std::pair<int, int> indexV = std::make_pair(this->Xadj[v], this->Xadj[v + 1]); //
+			q.pop();
+			if (len > dist[v]) continue;
+			for (int i = indexV.first; i < indexV.second; i++) {
+				int to = this->Adjncy[i] - 1;
+				double lenght = this->Eweights[i];
+				if (dist[to] > dist[v] + lenght && lenght > 0) {
+					dist[to] = dist[v] + lenght;
+					q.push(std::make_pair(-dist[to], to));
+				}
+			}
+			//std::pair<int, int> indexV = std::make_pair(this->Xadj[v], this->Xadj[v + 1]); // 
+		}
 
+		double d = dist[goal];
+		return d;
 	}
 
 
