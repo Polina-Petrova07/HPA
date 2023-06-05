@@ -1,4 +1,5 @@
 #pragma once
+#include<omp.h>
 #include "map.h"
 const int INF = 1000000000;
 
@@ -22,10 +23,27 @@ public:
 			}
 		}
 	}
+	CRSType(double** matrix, int size) {
+		this->Xadj.push_back(0);
+		int num = 0;
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				if (matrix[i][j] != 0) {
+					num++;
+					this->Adjncy.push_back(j + 1);
+					this->Eweights.push_back(matrix[i][j]);
+				}
+			}
+			this->Xadj.push_back(Xadj.back() + num);
+			num = 0;
+		}
+	}
 	double Dijkstra(int start, int goal) {
+		double time, t1, t2;
 		start--;
 		goal--;
 		int numNodes = this->Xadj.size() - 1;
+		t1 = omp_get_wtime();
 		std::vector<double> dist(numNodes, INF);
 		dist[start] = 0;
 		std::priority_queue<std::pair<double, int>> q;
@@ -47,9 +65,11 @@ public:
 			}
 			//std::pair<int, int> indexV = std::make_pair(this->Xadj[v], this->Xadj[v + 1]); // 
 		}
-
 		double d = dist[goal];
-		return d;
+		t2 = omp_get_wtime();
+
+		time = t2 - t1;
+		return time;
 	}
 
 
